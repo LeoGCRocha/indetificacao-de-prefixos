@@ -19,32 +19,34 @@ class Trie {
     //! clear
     void clear();
     // insert
-    void insert(const T& data);
+    void insert(char *string, int position);
     // track
-    int* insert(char* string);
+    int* track(char* string);
  private:
     class NoTrie {  // Elemento
      public:
         NoTrie() {
             position = 0;
             extension = 0;
-            letter = " "; 
-            for (int i = 0; i < 26; i++) {
-                this->sons[i] = nullptr;
-            }
-        }
-        
-        explicit NoTrie(char letter, unsigned long position, unsigned long extension) {
-            this->letter = letter;
-            this->position = position;
-            this->extension = extension;
+            letter = " ";
+            this->sons = new *NoTrie[26]
             for (int i = 0; i < 26; i++) {
                 this->sons[i] = nullptr;
             }
         }
 
-        void insert(std::string *word, unsigned long position, unsigned long end);
-        
+        explicit NoTrie(char letter, unsigned long position, unsigned long extension) {
+            this->letter = letter;
+            this->position = position;
+            this->extension = extension;
+            this->sons = new *NoTrie[26];
+            for (int i = 0; i < 26; i++) {
+                this->sons[i] = nullptr;
+            }
+        }
+
+        void insert(std::string *word, unsigned long position, unsigned long extension);
+
         char data() {  // getter: data
             return data_;
         }
@@ -52,15 +54,15 @@ class Trie {
         const char data() const {  // getter const: data
             return data_;
         }
-        
+
         unsigned long getPosition() {
             return this->position;
         }
-        
+
         unsigned long getExtension() {
             return this->extension;
         }
-        
+
        NoTrie* sons getSons() {
             return this->son;
         }
@@ -68,23 +70,23 @@ class Trie {
         char getLetter() {
             return this->letter;
         }
-        
+
         void setPosition(unsigned long p) {
             this->position = p;
         }
-        
+
         void setExtension(unsigned long e) {
             this->extension = e;
         }
-        
+
         void setLetter(char l) {
             this->letter = l;
         }
      private:
-        char letter;        
-        NoTrie* sons[26];  
+        char letter;
+        NoTrie* sons[26];
         unsigned long  position;
-        unsigned long  extension; 
+        unsigned long  extension;
     };
 
     NoTrie* head;  // top
@@ -98,7 +100,7 @@ structures::Trie::Trie() {
     head = b;
 }
 
-structures::Trie::NoTrie::insert(std::string *word, unsigned long position, unsigned long end) {
+structures::Trie::NoTrie::insert(std::string *word, unsigned long position, unsigned long extension) {
     NoTrie *b = head;
     for (int i = 0; i < word.size(); i++ ) {
         int ascii = int(word[i]) - 97;
@@ -107,18 +109,18 @@ structures::Trie::NoTrie::insert(std::string *word, unsigned long position, unsi
         } else {
             b = b->sons[ascii];
         }
-    } 
+    }
     b->setPosition(position);
-    b->setEnd(end);
+    b->setExtension(extension);
 }
 
 structures::Trie::insert(std::string *data, int position) {
     if (head == nullptr) {
-        throw std::out_of_range("nullptr error.");
+        throw std::out_of_range("invalid tree");
     } else {
         unsigned long posEnd = (unsigned long) data.find("]");
-        string *word = data.substr(1, posEnd - 1);
-        unsigned long end = ((unsigned long) data.size()) - (posEnd); 
-        head->insert(word, position, end); 
+        std::string *word = data.substr(1, posEnd - 1);
+        unsigned long end = ((unsigned long) data.size()) - (posEnd);
+        head->insert(word, position, data.size());
     }
 }
