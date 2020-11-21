@@ -29,7 +29,6 @@ int main() {
         if (word.compare("0") == 0) {
             break;
         } 
-        cout << word+" is prefix of 1 words"<< endl;
     }
 
     return 0;
