@@ -29,8 +29,11 @@ int main() {
         cin >> word;
         if (word.compare("0") == 0) {
             break;
+        } else {
+            cout << word + " ";
+            cout << " is prefix of " << tree.count_prefix(word) << " words."  << endl;
+            cout << word + " is at (" << "," << ")";
         }
-        cout << tree.count_prefix(word) << endl;
     }
 
     return 0;
