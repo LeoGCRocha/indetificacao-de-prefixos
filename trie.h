@@ -20,6 +20,8 @@ class Trie {
     void clear();
     // insert
     void insert(std::string data, int position);
+    // isWord
+    bool isWord(std::string word);
     // posicao
     int * position(std::string word);
     //
@@ -102,6 +104,24 @@ structures::Trie::Trie() {
     head = b;
 }
 
+bool structures::Trie::isWord(std::string word) {
+    if (head == nullptr) {
+        throw std::out_of_range("empty tree");
+    }
+    NoTrie *b = head;
+    for (char letter : word) {
+        int ascii = letter - 'a';
+        if (!(b = b->getSons()[ascii])) {
+            return false;
+        }
+    }
+    if (b->getExtension() != 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 void structures::Trie::NoTrie::insert(std::string word, unsigned long position, unsigned long end, NoTrie* node) {
     NoTrie *b = node;
     int ascii;
@@ -122,14 +142,13 @@ void structures::Trie::insert(std::string data, int position) {
     } else {
         unsigned long posEnd = (unsigned long) data.find("]");
         std::string word = data.substr(1, posEnd - 1);
-        unsigned long end = ((unsigned long) data.size()) - (posEnd);
-        head->insert(word, position, end, head);
+        head->insert(word, position, data.size(), head);
     }
 }
 
 int * structures::Trie::position(std::string word) {
     int * array = new int[2];
-    if(this->count_prefix(word) == 1) {
+    if(this->count_prefix(word) >= 1) {
         NoTrie *branch = head;
         for (int i = 0; i < word.size(); i++ ){
             int ascii = word[i] - 'a';
