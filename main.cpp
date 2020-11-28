@@ -18,7 +18,7 @@ int main() {
     	int position = 0;
     	while (getline(file, line)){
         	tree.insert(line, position);
-    	    position += sizeof(line) + 1;
+    	    position += line.size() + 1;
     	}
     }
     file.close();
@@ -30,13 +30,13 @@ int main() {
             int * pos_vector = tree.position(word);
             cout << word + " ";
             int contPrefix = tree.count_prefix(word);
-            if (contPrefix == 1) {
-                cout << " is prefix of " << contPrefix << " words."  << endl;
-                cout << word + " is at (" << pos_vector[0] <<"," << pos_vector[1] << ")" << endl;
-            } else if (contPrefix == 0){
-                std::cout << "is not prefix" << std::endl;
+            if (contPrefix == 0) {
+                cout << "is not prefix" << std::endl;
             } else {
-                cout << " is prefix of " << contPrefix << " words."  << endl;
+                cout << "is prefix of " << contPrefix << " words"  << endl;
+                if (tree.isWord(word)) {
+                    cout << word + " is at (" << pos_vector[0] <<"," << pos_vector[1] << ")" << endl;
+                } 
             }
         }
     }
