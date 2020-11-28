@@ -20,6 +20,8 @@ class Trie {
     void clear();
     // insert
     void insert(std::string data, int position);
+    // posicao
+    int * position(std::string word);
     //
     int count_prefix(std::string word);
     void display(void);
@@ -75,6 +77,10 @@ class Trie {
         void setLetter(char l) {
             this->letter = l;
         }
+        
+        NoTrie** getSons() {
+            return this->sons;
+        }
      private:
         char letter;
         NoTrie* sons[26];
@@ -121,13 +127,26 @@ void structures::Trie::insert(std::string data, int position) {
     }
 }
 
+int * structures::Trie::position(std::string word) {
+    int * array = new int[2];
+    if(this->count_prefix(word) == 1) {
+        NoTrie *branch = head;
+        for (int i = 0; i < word.size(); i++ ){
+            int ascii = word[i] - 'a';
+            branch = branch->getSons()[ascii];
+        }
+        array[0] = branch->getPosition();
+        array[1] = branch->getExtension();
+    }
+    return array;
+}
+
 int structures::Trie::count_prefix(std::string word) {
     NoTrie *branch = head;
     int counter = 0;
     if (!head) throw std::out_of_range("empty tree");
     branch = head->branch_point(word, head);
     if (branch) return branch->count_prefix(counter, branch);
-    std::cout << "no branch point" << std::endl;
     return 0;
 }
 
