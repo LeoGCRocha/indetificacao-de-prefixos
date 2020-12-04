@@ -6,7 +6,6 @@
 #include <cstdint>
 #include <stdexcept>
 #include <cstring>
-#include "linked_list.h"
 #include <string>
 
 namespace structures {
