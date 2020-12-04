@@ -1,8 +1,8 @@
 #include <iostream>
-#include "trie.h"
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
+#include "trie.h"
 
 using namespace std;
 
@@ -36,7 +36,7 @@ int main() {
                 cout << "is prefix of " << contPrefix << " words"  << endl;
                 if (tree.isWord(word)) {
                     cout << word + " is at (" << pos_vector[0] <<"," << pos_vector[1] << ")" << endl;
-                } 
+                }
             }
         }
     }
